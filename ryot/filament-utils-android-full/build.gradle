@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'com.yahoo.build.core.android.artifacts'
+
+group = 'com.ryot.google-filament'
+if (project.hasProperty('pullRequest')) {
+    version = "${getPureVersionFromGit()}-PR${project.getProperty('pullRequest')}"
+} else {
+    version = "${getPureVersionFromGit()}"
+}
+
+task obtainAar(type: Copy) {
+    from '../../android/filament-utils-android/build/outputs/aar/filament-utils-android-full-release.aar'
+    into buildDir
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation "${group}:filament-android:${version}${project.hasProperty('snapshot')?'-SNAPSHOT':''}@aar"
+    implementation "${group}:gltfio-android-full:${version}${project.hasProperty('snapshot')?'-SNAPSHOT':''}@aar"
+}
+
+artifacts.add('archives', file("$buildDir/filament-utils-android-full-release.aar")) {
+    name 'filament-utils-android-full'
+    type 'aar'
+    builtBy obtainAar
+}

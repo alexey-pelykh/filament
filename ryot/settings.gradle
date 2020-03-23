@@ -1,0 +1,7 @@
+include ':filament-android'
+include ':gltfio-android-full'
+include ':gltfio-android-lite'
+include ':filamat-android-full'
+include ':filamat-android-lite'
+include ':filament-utils-android-full'
+include ':filament-utils-android-lite'

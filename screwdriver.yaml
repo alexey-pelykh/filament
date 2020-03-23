@@ -1,0 +1,46 @@
+version: 4
+
+annotations:
+  screwdriver.cd/chainPR: true
+
+shared:
+  image: docker.ouroath.com:4443/ryot/android-sd4-staged-ylinux6-ndk-ninja:latest
+  annotations:
+    screwdriver.cd/ram: HIGH
+    screwdriver.cd/cpu: HIGH
+  environment:
+    GRADLE_BUILD_FILE: "ryot/build.gradle"
+    GIT_SHALLOW_CLONE_DEPTH: 250
+    PUBLISHLIB_DEFAULT_TASK: "uploadArchives"
+  steps:
+    - postenv-init: |
+        export PATH="/usr/local/bin:$PATH"
+        export CC=/usr/local/bin/clang
+        export CXX=/usr/local/bin/clang++
+        export CXXFLAGS=-stdlib=libc++
+    - build: |
+        ./build.sh -p android release
+    - test: |
+        echo "I also like to live dangerously"
+
+jobs:
+
+  publish:
+    requires: [~release]
+    template: mobile-excellence/android-library
+    environment:
+#     NOTE: -PdoRelease is needed for a plugin to detect that it's a release
+      PUBLISHLIB_RELEASE_ARG: "-Prelease -PdoRelease"
+
+  snapshot:
+    requires: [~commit:ryot-master]
+    template: mobile-excellence/android-library
+    environment:
+      PUBLISHLIB_RELEASE_ARG: "-Psnapshot"
+
+  feature:
+    requires: [~pr:ryot-master]
+    template: mobile-excellence/android-library
+    environment:
+      FORCE_PUBLISH_LIBRARY: 1
+      PUBLISHLIB_RELEASE_ARG: "-Psnapshot -PpullRequest=$SD_PULL_REQUEST"

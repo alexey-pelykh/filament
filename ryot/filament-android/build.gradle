@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'com.yahoo.build.core.android.artifacts'
+
+group = 'com.ryot.google-filament'
+if (project.hasProperty('pullRequest')) {
+    version = "${getPureVersionFromGit()}-PR${project.getProperty('pullRequest')}"
+} else {
+    version = "${getPureVersionFromGit()}"
+}
+
+task obtainAar(type: Copy) {
+    from '../../android/filament-android/build/outputs/aar/filament-android-release.aar'
+    into buildDir
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.1.0'
+}
+
+artifacts.add('archives', file("$buildDir/filament-android-release.aar")) {
+    name 'filament-android'
+    type 'aar'
+    builtBy obtainAar
+}

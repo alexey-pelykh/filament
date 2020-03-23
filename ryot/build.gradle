@@ -1,0 +1,36 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext {
+        getPureVersionFromGit = { ->
+            return 'MASTER'
+        }
+    }
+
+    repositories {
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/android-local-release' }
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/android-local-snapshot' }
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/maven2-google/' } // google mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/JitPack.io/' } // jitpack mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/plugins-gradle' } // gradle plugins proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/maven-org/' } // mavencentral mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/jcenter/' } // jcenter-bintray mirror/proxy
+        google()
+    }
+
+    dependencies {
+        classpath 'com.yahoo.build:artifacts:5.1.1-SNAPSHOT'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/android-local-release' }
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/android-local-snapshot' }
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/maven2-google/' } // google mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/JitPack.io/' } // jitpack mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/plugins-gradle' } // gradle plugins proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/maven-org/' } // mavencentral mirror/proxy
+        maven { url 'https://edge.artifactory.ouroath.com:4443/artifactory/jcenter/' } // jcenter-bintray mirror/proxy
+    }
+}
