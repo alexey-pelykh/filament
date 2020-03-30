@@ -140,6 +140,11 @@ import androidx.annotation.Size;
         nSetParent(mNativeObject, i, newParent);
     }
 
+    @Entity
+    public int getParentEntity(@EntityInstance int i) {
+        return nGetParent(mNativeObject, i);
+    }
+
     /**
      * Sets a local transform of a transform component.
      * <p>This operation can be slow if the hierarchy of transform is too deep, and this
@@ -241,6 +246,7 @@ import androidx.annotation.Size;
     private static native int nCreateArray(long mNativeObject, int entity, int parent, float[] localTransform);
     private static native void nDestroy(long nativeTransformManager, int entity);
     private static native void nSetParent(long nativeTransformManager, int i, int newParent);
+    private static native int nGetParent(long nativeTransformManager, int i);
     private static native void nSetTransform(long nativeTransformManager, int i, float[] localTransform);
     private static native void nGetTransform(long nativeTransformManager, int i, float[] outLocalTransform);
     private static native void nGetWorldTransform(long nativeTransformManager, int i, float[] outWorldTransform);
