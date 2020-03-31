@@ -47,6 +47,7 @@ set(GLTFIO_SRCS
         ${GLTFIO_DIR}/src/MaterialProvider.cpp
         ${GLTFIO_DIR}/src/ResourceLoader.cpp
         ${GLTFIO_DIR}/src/UbershaderLoader.cpp
+        ${GLTFIO_DIR}/src/ExternalMaterialLoader.cpp
         ${GLTFIO_DIR}/src/Wireframe.cpp
         ${GLTFIO_DIR}/src/Wireframe.h
         ${GLTFIO_DIR}/src/math.h

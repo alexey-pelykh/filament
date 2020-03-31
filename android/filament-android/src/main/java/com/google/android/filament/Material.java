@@ -274,7 +274,7 @@ public class Material {
         }
     }
 
-    Material(long nativeMaterial) {
+    public Material(long nativeMaterial) {
         mNativeObject = nativeMaterial;
         long nativeDefaultInstance = nGetDefaultInstance(nativeMaterial);
         mDefaultInstance = new MaterialInstance(this, nativeDefaultInstance);

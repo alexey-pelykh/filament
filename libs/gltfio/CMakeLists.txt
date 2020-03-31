@@ -32,6 +32,7 @@ set(SRCS
         src/MaterialProvider.cpp
         src/ResourceLoader.cpp
         src/UbershaderLoader.cpp
+        src/ExternalMaterialLoader.cpp
         src/Wireframe.cpp
         src/Wireframe.h
         src/math.h

@@ -96,6 +96,7 @@ inline uint8_t getNumUvSets(const UvMap& uvmap) {
 enum MaterialSource {
     GENERATE_SHADERS,
     LOAD_UBERSHADERS,
+    EXTERNAL,
 };
 
 /**
@@ -166,6 +167,23 @@ MaterialProvider* createMaterialGenerator(filament::Engine* engine);
  * Requires \c libgltfio_resources to be linked in.
  */
 MaterialProvider* createUbershaderLoader(filament::Engine* engine);
+
+typedef std::function<filament::Material* (
+        filament::Engine* engine, MaterialKey* config, UvMap* uvMap, const char* name
+)> ExternalSourceMaterialResolver;
+
+typedef std::function<filament::MaterialInstance* (
+        filament::Engine* engine, filament::Material* material, MaterialKey* config, UvMap* uvMap
+)> ExternalSourceMaterialInstantiator;
+
+/**
+ * Creates a material provider that loads materials from external source.
+ *
+ */
+MaterialProvider* createExternalMaterialLoader(
+        filament::Engine* engine, ExternalSourceMaterialResolver materialResolver,
+        ExternalSourceMaterialInstantiator materialInstantiator
+);
 
 } // namespace gltfio
 
