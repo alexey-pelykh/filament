@@ -261,6 +261,48 @@ Java_com_google_android_filament_MaterialInstance_nSetParameterTexture(
 }
 
 extern "C"
+JNIEXPORT jobject JNICALL
+Java_com_google_android_filament_MaterialInstance_nGetParameterTexture(
+        JNIEnv *env, jclass, jlong nativeMaterialInstance, jstring name_) {
+    MaterialInstance* instance = (MaterialInstance*) nativeMaterialInstance;
+    Texture const* texture;
+    TextureSampler sampler;
+
+    const char *name = env->GetStringUTFChars(name_, 0);
+    auto success = instance->getParameter(name, texture, sampler);
+    env->ReleaseStringUTFChars(name_, name);
+
+    if (!success) {
+        return NULL;
+    }
+
+    const auto jTextureClass = env->FindClass("com/google/android/filament/Texture");
+    const auto jTextureCtor = env->GetMethodID(jTextureClass, "<init>", "(J)V");
+    const auto jTextureSamplerClass = env->FindClass("com/google/android/filament/TextureSampler");
+    const auto jTextureSamplerCtor = env->GetMethodID(jTextureSamplerClass, "<init>", "(I)V");
+    const auto jTexture = env->NewObject(jTextureClass, jTextureCtor, (jlong)texture);
+    const auto jTextureSampler = env->NewObject(
+            jTextureSamplerClass,
+            jTextureSamplerCtor,
+            static_cast<jint>(sampler.getSamplerParams().u)
+    );
+    const auto jTextureAndSamplerClass = env->FindClass(
+            "com/google/android/filament/MaterialInstance$TextureAndSampler"
+    );
+    const auto jTextureAndSamplerCtor = env->GetMethodID(
+            jTextureAndSamplerClass,
+            "<init>",
+            "(Lcom/google/android/filament/Texture;Lcom/google/android/filament/TextureSampler;)V"
+    );
+    return env->NewObject(
+            jTextureAndSamplerClass,
+            jTextureAndSamplerCtor,
+            jTexture,
+            jTextureSampler
+    );
+}
+
+extern "C"
 JNIEXPORT void JNICALL
 Java_com_google_android_filament_MaterialInstance_nSetScissor(
         JNIEnv *env, jclass, jlong nativeMaterialInstance, jint left,

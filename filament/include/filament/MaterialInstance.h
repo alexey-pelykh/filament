@@ -103,6 +103,17 @@ public:
             Texture const* texture, TextureSampler const& sampler) noexcept;
 
     /**
+     * Get a texture as the named parameter
+     *
+     * @param name              Name of the parameter as defined by Material. Cannot be nullptr.
+     * @param[out] outTexture   Texture pointer.
+     * @param[out] outSampler   Sampler parameters.
+     * @return True if return values are set correctly, false otherwise.
+     */
+    bool getParameter(const char* name,
+            Texture const*& outTexture, TextureSampler& outSampler) noexcept;
+
+    /**
      * Set an RGB color as the named parameter.
      * A conversion might occur depending on the specified type
      *

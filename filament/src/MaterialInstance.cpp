@@ -144,12 +144,28 @@ inline void FMaterialInstance::setParameter(const char* name, const T* value, si
 void FMaterialInstance::setParameter(const char* name,
         Texture const* texture, TextureSampler const& sampler) noexcept {
     setParameter(name, upcast(texture)->getHwHandle(), sampler.getSamplerParams());
+    mSamplerParametersCache[name] = SamplerParameters { texture, sampler };
 }
 
 void FMaterialInstance::setParameter(const char* name,
         backend::Handle<backend::HwTexture> texture, backend::SamplerParams params) noexcept {
+    const auto cachedSamplerParameters = mSamplerParametersCache.find(name);
+    if (cachedSamplerParameters != mSamplerParametersCache.cend()) {
+        mSamplerParametersCache.erase(cachedSamplerParameters);
+    }
     size_t index = mMaterial->getSamplerInterfaceBlock().getSamplerInfo(name)->offset;
     mSamplers.setSampler(index, { texture, params });
+}
+
+bool FMaterialInstance::getParameter(const char *name,
+        const Texture *&outTexture, TextureSampler &outSampler) noexcept {
+    const auto cachedSamplerParameters = mSamplerParametersCache.find(name);
+    if (cachedSamplerParameters == mSamplerParametersCache.cend()) {
+        return false;
+    }
+    outTexture = cachedSamplerParameters->second.texture;
+    outSampler = cachedSamplerParameters->second.sampler;
+    return true;
 }
 
 void FMaterialInstance::setDoubleSided(bool doubleSided) noexcept {
@@ -286,6 +302,10 @@ template UTILS_PUBLIC void MaterialInstance::setParameter<mat4f>   (const char* 
 void MaterialInstance::setParameter(const char* name, Texture const* texture,
         TextureSampler const& sampler) noexcept {
     return upcast(this)->setParameter(name, texture, sampler);
+}
+
+bool MaterialInstance::getParameter(const char *name, const Texture *&outTexture, TextureSampler &outSampler) noexcept {
+    return upcast(this)->getParameter(name, outTexture, outSampler);
 }
 
 void MaterialInstance::setParameter(const char* name, RgbType type, float3 color) noexcept {

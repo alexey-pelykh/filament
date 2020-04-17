@@ -232,6 +232,28 @@ public class MaterialInstance {
         nSetParameterTexture(getNativeObject(), name, texture.getNativeObject(), sampler.mSampler);
     }
 
+    public static class TextureAndSampler {
+        Texture mTexture;
+        TextureSampler mTextureSampler;
+
+        public TextureAndSampler(Texture texture, TextureSampler textureSampler) {
+            mTexture = texture;
+            mTextureSampler = textureSampler;
+        }
+
+        public Texture getTexture() {
+            return mTexture;
+        }
+
+        public TextureSampler getTextureSampler() {
+            return mTextureSampler;
+        }
+    }
+
+    public TextureAndSampler getParameterTexture(@NonNull String name) {
+        return nGetParameterTexture(getNativeObject(), name);
+    }
+
     /**
      * Set a bool parameter array by name.
      *
@@ -529,6 +551,8 @@ public class MaterialInstance {
 
     private static native void nSetParameterTexture(long nativeMaterialInstance,
             @NonNull String name, long nativeTexture, int sampler);
+    private static native TextureAndSampler nGetParameterTexture(long nativeMaterialInstance,
+            @NonNull String name);
 
     private static native void nSetScissor(long nativeMaterialInstance,
             @IntRange(from = 0) int left, @IntRange(from = 0) int bottom,
