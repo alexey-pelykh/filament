@@ -125,6 +125,13 @@ void FMaterialInstance::commitSlow(DriverApi& driver) const {
     }
 }
 
+
+template<typename T, typename>
+inline T FMaterialInstance::getParameter(const char* name) noexcept {
+    ssize_t offset = mMaterial->getUniformInterfaceBlock().getUniformOffset(name, 0);
+    return mUniforms.getUniform<T>(size_t(offset));  // handles specialization for mat3f
+}
+
 template<typename T, typename>
 inline void FMaterialInstance::setParameter(const char* name, T value) noexcept {
     ssize_t offset = mMaterial->getUniformInterfaceBlock().getUniformOffset(name, 0);
@@ -206,6 +213,28 @@ const char* FMaterialInstance::getName() const noexcept {
 }
 
 // explicit template instantiation of our supported types
+template UTILS_NOINLINE bool FMaterialInstance::getParameter<bool>    (const char* name) noexcept;
+template UTILS_NOINLINE bool2 FMaterialInstance::getParameter<bool2>    (const char* name) noexcept;
+template UTILS_NOINLINE bool3 FMaterialInstance::getParameter<bool3>    (const char* name) noexcept;
+template UTILS_NOINLINE bool4 FMaterialInstance::getParameter<bool4>    (const char* name) noexcept;
+
+template UTILS_NOINLINE float FMaterialInstance::getParameter<float>    (const char* name) noexcept;
+template UTILS_NOINLINE float2 FMaterialInstance::getParameter<float2>    (const char* name) noexcept;
+template UTILS_NOINLINE float3 FMaterialInstance::getParameter<float3>    (const char* name) noexcept;
+template UTILS_NOINLINE float4 FMaterialInstance::getParameter<float4>    (const char* name) noexcept;
+
+template UTILS_NOINLINE int32_t FMaterialInstance::getParameter<int32_t>    (const char* name) noexcept;
+template UTILS_NOINLINE int2 FMaterialInstance::getParameter<int2>    (const char* name) noexcept;
+template UTILS_NOINLINE int3 FMaterialInstance::getParameter<int3>    (const char* name) noexcept;
+template UTILS_NOINLINE int4 FMaterialInstance::getParameter<int4>    (const char* name) noexcept;
+
+template UTILS_NOINLINE uint32_t FMaterialInstance::getParameter<uint32_t>    (const char* name) noexcept;
+template UTILS_NOINLINE uint2 FMaterialInstance::getParameter<uint2>    (const char* name) noexcept;
+template UTILS_NOINLINE uint3 FMaterialInstance::getParameter<uint3>    (const char* name) noexcept;
+template UTILS_NOINLINE uint4 FMaterialInstance::getParameter<uint4>    (const char* name) noexcept;
+template UTILS_NOINLINE mat3f FMaterialInstance::getParameter<mat3f>    (const char* name) noexcept;
+template UTILS_NOINLINE mat4f FMaterialInstance::getParameter<mat4f>    (const char* name) noexcept;
+
 template UTILS_NOINLINE void FMaterialInstance::setParameter<bool>    (const char* name, bool     v) noexcept;
 template UTILS_NOINLINE void FMaterialInstance::setParameter<float>   (const char* name, float    v) noexcept;
 template UTILS_NOINLINE void FMaterialInstance::setParameter<int32_t> (const char* name, int32_t  v) noexcept;
@@ -252,6 +281,11 @@ const char* MaterialInstance::getName() const noexcept {
 }
 
 template <typename T, typename>
+T MaterialInstance::getParameter(const char* name) noexcept {
+    return upcast(this)->getParameter<T>(name);
+}
+
+template <typename T, typename>
 void MaterialInstance::setParameter(const char* name, T value) noexcept {
     upcast(this)->setParameter<T>(name, value);
 }
@@ -262,6 +296,28 @@ void MaterialInstance::setParameter(const char* name, const T* value, size_t cou
 }
 
 // explicit template instantiation of our supported types
+template UTILS_PUBLIC bool MaterialInstance::getParameter<bool>    (const char* name) noexcept;
+template UTILS_PUBLIC bool2 MaterialInstance::getParameter<bool2>    (const char* name) noexcept;
+template UTILS_PUBLIC bool3 MaterialInstance::getParameter<bool3>    (const char* name) noexcept;
+template UTILS_PUBLIC bool4 MaterialInstance::getParameter<bool4>    (const char* name) noexcept;
+
+template UTILS_PUBLIC float MaterialInstance::getParameter<float>    (const char* name) noexcept;
+template UTILS_PUBLIC float2 MaterialInstance::getParameter<float2>    (const char* name) noexcept;
+template UTILS_PUBLIC float3 MaterialInstance::getParameter<float3>    (const char* name) noexcept;
+template UTILS_PUBLIC float4 MaterialInstance::getParameter<float4>    (const char* name) noexcept;
+
+template UTILS_PUBLIC int32_t MaterialInstance::getParameter<int32_t>    (const char* name) noexcept;
+template UTILS_PUBLIC int2 MaterialInstance::getParameter<int2>    (const char* name) noexcept;
+template UTILS_PUBLIC int3 MaterialInstance::getParameter<int3>    (const char* name) noexcept;
+template UTILS_PUBLIC int4 MaterialInstance::getParameter<int4>    (const char* name) noexcept;
+
+template UTILS_PUBLIC uint32_t MaterialInstance::getParameter<uint32_t>    (const char* name) noexcept;
+template UTILS_PUBLIC uint2 MaterialInstance::getParameter<uint2>    (const char* name) noexcept;
+template UTILS_PUBLIC uint3 MaterialInstance::getParameter<uint3>    (const char* name) noexcept;
+template UTILS_PUBLIC uint4 MaterialInstance::getParameter<uint4>    (const char* name) noexcept;
+template UTILS_PUBLIC mat3f MaterialInstance::getParameter<mat3f>    (const char* name) noexcept;
+template UTILS_PUBLIC mat4f MaterialInstance::getParameter<mat4f>    (const char* name) noexcept;
+
 template UTILS_PUBLIC void MaterialInstance::setParameter<bool>    (const char* name, bool     v) noexcept;
 template UTILS_PUBLIC void MaterialInstance::setParameter<float>   (const char* name, float    v) noexcept;
 template UTILS_PUBLIC void MaterialInstance::setParameter<int32_t> (const char* name, int32_t  v) noexcept;

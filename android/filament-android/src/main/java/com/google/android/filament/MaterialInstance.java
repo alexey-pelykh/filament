@@ -82,6 +82,73 @@ public class MaterialInstance {
         return mName;
     }
 
+    public boolean getParameterBool(@NonNull String name) {
+        return nGetParameterBool(getNativeObject(), name);
+    }
+    public boolean[] getParameterBool2(@NonNull String name) {
+        boolean[] result = new boolean[2];
+        nGetParameterBool2(getNativeObject(), name, result);
+        return result;
+    }
+    public boolean[] getParameterBool3(@NonNull String name) {
+        boolean[] result = new boolean[3];
+        nGetParameterBool3(getNativeObject(), name, result);
+        return result;
+    }
+    public boolean[] getParameterBool4(@NonNull String name) {
+        boolean[] result = new boolean[4];
+        nGetParameterBool4(getNativeObject(), name, result);
+        return result;
+    }
+    public float getParameterFloat(@NonNull String name) {
+        return nGetParameterFloat(getNativeObject(), name);
+    }
+    public float[] getParameterFloat2(@NonNull String name) {
+        float[] result = new float[2];
+        nGetParameterFloat2(getNativeObject(), name, result);
+        return result;
+    }
+    public float[] getParameterFloat3(@NonNull String name) {
+        float[] result = new float[3];
+        nGetParameterFloat3(getNativeObject(), name, result);
+        return result;
+    }
+    public float[] getParameterFloat4(@NonNull String name) {
+        float[] result = new float[4];
+        nGetParameterFloat4(getNativeObject(), name, result);
+        return result;
+    }
+    public int getParameterInt(@NonNull String name) {
+        return nGetParameterInt(getNativeObject(), name);
+    }
+    public int[] getParameterInt2(@NonNull String name) {
+        int[] result = new int[2];
+        nGetParameterInt2(getNativeObject(), name, result);
+        return result;
+    }
+    public int[] getParameterInt3(@NonNull String name) {
+        int[] result = new int[3];
+        nGetParameterInt3(getNativeObject(), name, result);
+        return result;
+    }
+    public int[] getParameterInt4(@NonNull String name) {
+        int[] result = new int[4];
+        nGetParameterInt4(getNativeObject(), name, result);
+        return result;
+    }
+
+    public float[] getParameterMat3f(@NonNull String name) {
+        float[] result = new float[3*3];
+        nGetParameterMat3f(getNativeObject(), name, result);
+        return result;
+    }
+
+    public float[] getParameterMat4f(@NonNull String name) {
+        float[] result = new float[4*4];
+        nGetParameterMat4f(getNativeObject(), name, result);
+        return result;
+    }
+
     /**
      * Sets the value of a bool parameter.
      *
@@ -510,6 +577,26 @@ public class MaterialInstance {
     void clearNativeObject() {
         mNativeObject = 0;
     }
+
+
+    private static native boolean nGetParameterBool(long nativeMaterialInstance, @NonNull String name);
+    private static native void nGetParameterBool2(long nativeMaterialInstance, @NonNull String name, boolean[] result);
+    private static native void nGetParameterBool3(long nativeMaterialInstance, @NonNull String name, boolean[] result);
+    private static native void nGetParameterBool4(long nativeMaterialInstance, @NonNull String name, boolean[] result);
+
+    private static native float nGetParameterFloat(long nativeMaterialInstance, @NonNull String name);
+    private static native void nGetParameterFloat2(long nativeMaterialInstance, @NonNull String name, float[] result);
+    private static native void nGetParameterFloat3(long nativeMaterialInstance, @NonNull String name, float[] result);
+    private static native void nGetParameterFloat4(long nativeMaterialInstance, @NonNull String name, float[] result);
+    private static native void nGetParameterMat3f(long nativeMaterialInstance, @NonNull String name, float[] result);
+    private static native void nGetParameterMat4f(long nativeMaterialInstance, @NonNull String name, float[] result);
+
+    private static native int nGetParameterInt(long nativeMaterialInstance, @NonNull String name);
+    private static native void nGetParameterInt2(long nativeMaterialInstance, @NonNull String name, int[] result);
+    private static native void nGetParameterInt3(long nativeMaterialInstance, @NonNull String name, int[] result);
+    private static native void nGetParameterInt4(long nativeMaterialInstance, @NonNull String name, int[] result);
+
+    //TODO do we need getters for nSetBooleanParameterArray and others?
 
     private static native void nSetParameterBool(long nativeMaterialInstance,
             @NonNull String name, boolean x);

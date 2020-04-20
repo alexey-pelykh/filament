@@ -64,6 +64,9 @@ public:
     }
 
     template <typename T, typename = is_supported_parameter_t<T>>
+    T getParameter(const char* name) noexcept;
+
+    template <typename T, typename = is_supported_parameter_t<T>>
     void setParameter(const char* name, T value) noexcept;
 
     template <typename T, typename = is_supported_parameter_t<T>>

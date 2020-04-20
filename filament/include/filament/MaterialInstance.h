@@ -65,6 +65,9 @@ public:
      */
     Material const* getMaterial() const noexcept;
 
+    template<typename T, typename = is_supported_parameter_t<T>>
+    T getParameter(const char* name) noexcept;
+
     /**
      * @return the name associated with this instance
      */
