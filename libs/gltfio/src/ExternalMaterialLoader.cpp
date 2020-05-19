@@ -9,11 +9,13 @@
 #include <utils/CString.h>
 #include <tsl/robin_map.h>
 
+#if !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
 #if GLTFIO_LITE
 #include "gltfresources_lite.h"
 #else
 #include "gltfresources.h"
 #endif
+#endif // !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
 
 using namespace filament;
 using namespace filament::math;

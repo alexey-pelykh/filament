@@ -14,6 +14,16 @@ android {
                 }
             }
         }
+
+        zero {
+            dimension "functionality"
+
+            externalNativeBuild {
+                cmake {
+                    arguments.add("-DGLTFIO_ZERO=ON")
+                }
+            }
+        }
     }
 
     // No need to package up the following shared libs, which arise as a side effect of our
@@ -43,6 +53,11 @@ afterEvaluate { project ->
             liteRelease(MavenPublication) {
                 artifactId = POM_ARTIFACT_ID_LITE
                 from components.liteRelease
+            }
+
+            zeroRelease(MavenPublication) {
+                artifactId = POM_ARTIFACT_ID_ZERO
+                from components.zeroRelease
             }
         }
     }

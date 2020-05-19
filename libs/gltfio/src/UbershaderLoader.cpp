@@ -24,11 +24,13 @@
 
 #include <utils/Log.h>
 
+#if !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
 #if GLTFIO_LITE
 #include "gltfresources_lite.h"
 #else
 #include "gltfresources.h"
 #endif
+#endif // !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
 
 using namespace filament;
 using namespace filament::math;
@@ -67,6 +69,8 @@ public:
     filament::Engine* mEngine;
 };
 
+#if !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
+
 #if GLTFIO_LITE
 
 #define CREATE_MATERIAL(name) Material::Builder() \
@@ -80,6 +84,8 @@ public:
     .build(*mEngine);
 
 #endif
+
+#endif // !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
 
 #define MATINDEX(shading, alpha, transmit) (transmit ? 9 : (int(shading) + 3 * int(alpha)))
 
@@ -119,6 +125,8 @@ Material* UbershaderLoader::getMaterial(const MaterialKey& config) const {
     }
     switch (matindex) {
 
+        #if !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
+
         #if !GLTFIO_LITE || defined(GLTFRESOURCES_LITE_LIT_OPAQUE_DATA)
         case MATINDEX(LIT, AlphaMode::OPAQUE, false): mMaterials[matindex] = CREATE_MATERIAL(LIT_OPAQUE); break;
         #endif
@@ -137,6 +145,10 @@ Material* UbershaderLoader::getMaterial(const MaterialKey& config) const {
         case MATINDEX(SPECULAR_GLOSSINESS, AlphaMode::BLEND, false): mMaterials[matindex] = CREATE_MATERIAL(SPECULARGLOSSINESS_FADE); break;
         case MATINDEX(0, 0, true): mMaterials[matindex] = CREATE_MATERIAL(LIT_TRANSPARENT); break;
         #endif
+
+        #endif // !defined(GLTFIO_ZERO) || !GLTFIO_ZERO
+
+        default: mMaterials[matindex] = nullptr; break;
     }
     if (mMaterials[matindex] == nullptr) {
         slog.w << "Unsupported glTF material configuration; falling back to LIT_OPAQUE." << io::endl;

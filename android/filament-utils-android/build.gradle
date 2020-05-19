@@ -11,6 +11,10 @@ android {
         lite {
             dimension "functionality"
         }
+
+        zero {
+            dimension "functionality"
+        }
     }
 
     sourceSets {
@@ -36,6 +40,7 @@ configurations.all { config ->
             dependencySubstitution {
                 substitute(module("com.google.android.filament:gltfio-android:${VERSION_NAME}")).with(project(":gltfio-android"))
                 substitute(module("com.google.android.filament:gltfio-android-lite:${VERSION_NAME}")).with(project(":gltfio-android"))
+                substitute(module("com.google.android.filament:gltfio-android-zero:${VERSION_NAME}")).with(project(":gltfio-android"))
             }
         }
     }
@@ -51,6 +56,7 @@ dependencies {
 
     fullImplementation module("com.google.android.filament:gltfio-android:${VERSION_NAME}")
     liteImplementation module("com.google.android.filament:gltfio-android-lite:${VERSION_NAME}")
+    zeroImplementation module("com.google.android.filament:gltfio-android-zero:${VERSION_NAME}")
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
@@ -66,6 +72,11 @@ afterEvaluate {
             liteRelease(MavenPublication) {
                 artifactId = POM_ARTIFACT_ID_LITE
                 from components.liteRelease
+            }
+
+            zeroRelease(MavenPublication) {
+                artifactId = POM_ARTIFACT_ID_ZERO
+                from components.zeroRelease
             }
         }
     }

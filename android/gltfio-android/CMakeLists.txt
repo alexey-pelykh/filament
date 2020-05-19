@@ -86,9 +86,14 @@ set_target_properties(gltfio-jni PROPERTIES LINK_DEPENDS ${CMAKE_CURRENT_SOURCE_
 if(GLTFIO_LITE)
         target_compile_definitions(gltfio-jni PUBLIC GLTFIO_LITE=1)
         target_link_libraries(gltfio-jni filament-jni utils log gltfio_resources_lite)
+elseif(GLTFIO_ZERO)
+        target_compile_definitions(gltfio-jni PUBLIC GLTFIO_ZERO=1)
+        target_link_libraries(gltfio-jni filament-jni utils log)
 else()
         target_link_libraries(gltfio-jni filament-jni utils log gltfio_resources)
+endif()
 
+if(NOT GLTFIO_LITE)
         # Enable Draco in the non-lite variant of gltfio.
         target_link_libraries(gltfio-jni dracodec)
         target_compile_definitions(gltfio-jni PUBLIC GLTFIO_DRACO_SUPPORTED=1)
