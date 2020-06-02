@@ -170,7 +170,7 @@ public class FilamentAsset {
         return result;
     }
 
-    public @Entity int getSkinCount() {
+    public int getSkinCount() {
         return nGetSkinCount(mNativeObject);
     }
 
