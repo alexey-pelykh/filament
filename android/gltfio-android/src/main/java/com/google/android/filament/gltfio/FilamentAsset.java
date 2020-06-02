@@ -207,7 +207,7 @@ public class FilamentAsset {
      * Gets the <code>NameComponentManager</code> label for the given entity, if it exists.
      */
     public String getName(@Entity int entity) {
-        return nGetName(getNativeObject(), entity);
+        return nGetName(mNativeObject, entity);
     }
 
     /**
@@ -221,7 +221,7 @@ public class FilamentAsset {
         if (mAnimator != null) {
             return mAnimator;
         }
-        mAnimator = new Animator(nGetAnimator(getNativeObject()));
+        mAnimator = new Animator(nGetAnimator(mNativeObject));
         return mAnimator;
     }
 
