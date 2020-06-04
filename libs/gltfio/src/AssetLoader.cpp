@@ -358,8 +358,10 @@ void FAssetLoader::createEntity(const cgltf_node* node, Entity parent, bool enab
     if (instance) {
         instance->entities.push_back(entity);
         instance->nodeMap[node] = entity;
+        instance->reverseNodeMap[entity] = node;
     } else {
         mResult->mNodeMap[node] = entity;
+        mResult->mReverseNodeMap[entity] = node;
     }
 
     const char* name = getNodeName(node, mDefaultNodeName);

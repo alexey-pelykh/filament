@@ -46,6 +46,7 @@ struct Skin {
 
 using SkinVector = std::vector<Skin>;
 using NodeMap = tsl::robin_map<const cgltf_node*, utils::Entity>;
+using ReverseNodeMap = tsl::robin_map<utils::Entity, const cgltf_node*>;
 
 struct FFilamentInstance : public FilamentInstance {
     std::vector<utils::Entity> entities;
@@ -54,6 +55,7 @@ struct FFilamentInstance : public FilamentInstance {
     FFilamentAsset* owner;
     SkinVector skins;
     NodeMap nodeMap;
+    ReverseNodeMap reverseNodeMap;
 
     Animator* getAnimator() noexcept {
         if (!animator) {

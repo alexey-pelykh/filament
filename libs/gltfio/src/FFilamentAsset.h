@@ -237,6 +237,7 @@ struct FFilamentAsset : public FilamentAsset {
     std::vector<const char*> mResourceUris;
     const cgltf_data* mSourceAsset = nullptr;
     NodeMap mNodeMap; // unused for instanced assets
+    ReverseNodeMap mReverseNodeMap; // unused for instanced assets
     std::vector<std::pair<const cgltf_primitive*, filament::VertexBuffer*> > mPrimitives;
 };
 
