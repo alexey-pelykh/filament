@@ -113,6 +113,18 @@ const char* FFilamentAsset::getName(utils::Entity entity) const noexcept {
     return nameInstance ? mNameManager->getName(nameInstance) : nullptr;
 }
 
+std::string FFilamentAsset::getExtras(utils::Entity entity) const noexcept {
+    const auto itNode = mReverseNodeMap.find(entity);
+    if (itNode == mReverseNodeMap.cend()) {
+        return std::string();
+    }
+    const auto itExtras = mExtras.find(reinterpret_cast<const void*>(itNode->second));
+    if (itExtras == mExtras.cend()) {
+        return std::string();
+    }
+    return itExtras->second;
+}
+
 Entity FFilamentAsset::getFirstEntityByName(const char* name) noexcept {
     const auto iter = mNameToEntity.find(name);
     if (iter == mNameToEntity.end()) {
@@ -236,6 +248,10 @@ filament::Aabb FilamentAsset::getBoundingBox() const noexcept {
 
 const char* FilamentAsset::getName(Entity entity) const noexcept {
     return upcast(this)->getName(entity);
+}
+
+std::string FilamentAsset::getExtras(Entity entity) const noexcept {
+    return upcast(this)->getExtras(entity);
 }
 
 Entity FilamentAsset::getFirstEntityByName(const char* name) noexcept {

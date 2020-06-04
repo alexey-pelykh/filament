@@ -23,6 +23,7 @@ import android.view.Choreographer
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.SurfaceView
+import com.google.android.filament.EntityManager
 import com.google.android.filament.View
 import com.google.android.filament.utils.KtxLoader
 import com.google.android.filament.utils.ModelViewer
@@ -81,7 +82,13 @@ class MainActivity : Activity() {
             ByteBuffer.wrap(bytes)
         }
 
-        modelViewer.loadModelGltfAsync(buffer) { uri -> readCompressedAsset("models/$uri") }
+        modelViewer.loadModelGltfAsync(buffer, { uri -> readCompressedAsset("models/$uri") })
+        modelViewer.asset?.let { asset ->
+            val extras = asset.entities.map { entity ->
+                Pair(asset.getName(entity), asset.getExtras(entity))
+            }
+            println(extras)
+        }
         modelViewer.transformToUnitCube()
     }
 

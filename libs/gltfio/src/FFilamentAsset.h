@@ -138,6 +138,8 @@ struct FFilamentAsset : public FilamentAsset {
 
     const char* getName(utils::Entity entity) const noexcept;
 
+    std::string getExtras(utils::Entity entity) const noexcept;
+
     utils::Entity getFirstEntityByName(const char* name) noexcept;
 
     size_t getEntitiesByName(const char* name, utils::Entity* entities,
@@ -239,6 +241,7 @@ struct FFilamentAsset : public FilamentAsset {
     NodeMap mNodeMap; // unused for instanced assets
     ReverseNodeMap mReverseNodeMap; // unused for instanced assets
     std::vector<std::pair<const cgltf_primitive*, filament::VertexBuffer*> > mPrimitives;
+    tsl::robin_map<const void*, std::string> mExtras;
 };
 
 FILAMENT_UPCAST(FilamentAsset)

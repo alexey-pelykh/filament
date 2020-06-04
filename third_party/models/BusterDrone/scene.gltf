@@ -10531,7 +10531,10 @@
         1,
         1,
         1
-      ]
+      ],
+      "extras": {
+        "custom": "value"
+      }
     },
     {
       "children": [

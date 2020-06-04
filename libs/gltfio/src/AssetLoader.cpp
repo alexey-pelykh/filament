@@ -44,6 +44,7 @@
 
 #include <tsl/robin_map.h>
 
+#include <string>
 #include <vector>
 
 #define CGLTF_IMPLEMENTATION
@@ -164,6 +165,8 @@ struct FAssetLoader : public AssetLoader {
 
     static LightManager::Type getLightType(const cgltf_light_type type);
 
+    std::string getExtras(const cgltf_data* gltfData, const cgltf_extras* gltfExtras) const;
+
     EntityManager& mEntityManager;
     RenderableManager& mRenderableManager;
     NameComponentManager* mNameManager;
@@ -267,6 +270,12 @@ void FAssetLoader::createAsset(const cgltf_data* srcAsset, size_t numInstances) 
     const cgltf_scene* scene = srcAsset->scene ? srcAsset->scene : srcAsset->scenes;
     if (!scene) {
         return;
+    }
+
+    // Collect extras from nodes
+    for (cgltf_size i = 0, len = scene->nodes_count; i < len; ++i) {
+        const auto node = scene->nodes[i];
+        mResult->mExtras[reinterpret_cast<const void*>(node)] = getExtras(srcAsset, &node->extras);
     }
 
     // Create a single root node with an identity transform as a convenience to the client.
@@ -1135,6 +1144,24 @@ LightManager::Type FAssetLoader::getLightType(const cgltf_light_type light) {
         case cgltf_light_type_spot:
             return LightManager::Type::FOCUSED_SPOT;
     }
+}
+
+std::string FAssetLoader::getExtras(const cgltf_data* gltfData, const cgltf_extras* gltfExtras) const {
+    std::string extras;
+    cgltf_result result;
+    cgltf_size size = 0;
+    result = cgltf_copy_extras_json(gltfData, gltfExtras, nullptr, &size);
+    if (result != cgltf_result_success) {
+        slog.e << "Failed to get extras size" << io::endl;
+        return extras;
+    }
+    extras.resize(size - 1);
+    result = cgltf_copy_extras_json(gltfData, gltfExtras, &extras[0], &size);
+    if (result != cgltf_result_success) {
+        slog.e << "Failed to get extras" << io::endl;
+        return std::string();
+    }
+    return extras;
 }
 
 AssetLoader* AssetLoader::create(const AssetConfiguration& config) {

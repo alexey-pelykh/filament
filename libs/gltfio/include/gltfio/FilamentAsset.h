@@ -22,6 +22,8 @@
 
 #include <utils/Entity.h>
 
+#include <string>
+
 namespace filament {
     class Camera;
     class Engine;
@@ -159,6 +161,9 @@ public:
 
     /** Gets the NameComponentManager label for the given entity, if it exists. */
     const char* getName(utils::Entity) const noexcept;
+
+    /** Gets the application-specific extras loaded from asset for specific entity, if such exist. */
+    std::string getExtras(utils::Entity entity) const noexcept;
 
     /** Returns the first entity with the given name, or 0 if none exist. */
     utils::Entity getFirstEntityByName(const char* name) noexcept;

@@ -231,6 +231,15 @@ Java_com_google_android_filament_gltfio_FilamentAsset_nGetName(JNIEnv* env, jcla
     return val ? env->NewStringUTF(val) : nullptr;
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_google_android_filament_gltfio_FilamentAsset_nGetExtras(JNIEnv* env, jclass,
+        jlong nativeAsset, jint entityId) {
+    Entity entity = Entity::import(entityId);
+    FilamentAsset* asset = (FilamentAsset*) nativeAsset;
+    const std::string val = asset->getExtras(entity);
+    return !val.empty() ? env->NewStringUTF(val.c_str()) : nullptr;
+}
+
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_google_android_filament_gltfio_FilamentAsset_nGetAnimator(JNIEnv* , jclass,
         jlong nativeAsset) {

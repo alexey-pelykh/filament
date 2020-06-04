@@ -18,10 +18,32 @@
 
 #include <gltfio/Animator.h>
 
+#include "FFilamentAsset.h"
+
 using namespace filament;
 using namespace utils;
 
 namespace gltfio {
+
+const char* FFilamentInstance::getName(utils::Entity entity) const noexcept {
+    return owner->getName(entity);
+}
+
+std::string FFilamentInstance::getExtras(utils::Entity entity) const noexcept {
+    const auto itNode = reverseNodeMap.find(entity);
+    if (itNode == reverseNodeMap.cend()) {
+        return std::string();
+    }
+    const auto itExtras = owner->mExtras.find(reinterpret_cast<const void*>(itNode->second));
+    if (itExtras == owner->mExtras.cend()) {
+        return std::string();
+    }
+    return itExtras->second;
+}
+
+FilamentAsset* FilamentInstance::getOwner() const noexcept {
+    return upcast(this)->owner;
+}
 
 size_t FilamentInstance::getEntityCount() const noexcept {
     return upcast(this)->entities.size();
@@ -34,6 +56,14 @@ const Entity* FilamentInstance::getEntities() const noexcept {
 
 Entity FilamentInstance::getRoot() const noexcept {
     return upcast(this)->root;
+}
+
+const char* FilamentInstance::getName(utils::Entity entity) const noexcept {
+    return upcast(this)->getName(entity);
+}
+
+std::string FilamentInstance::getExtras(utils::Entity entity) const noexcept {
+    return upcast(this)->getExtras(entity);
 }
 
 Animator* FilamentInstance::getAnimator() noexcept {

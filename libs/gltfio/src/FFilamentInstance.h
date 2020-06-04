@@ -63,6 +63,10 @@ struct FFilamentInstance : public FilamentInstance {
         }
         return animator;
     }
+
+    const char* getName(utils::Entity entity) const noexcept;
+
+    std::string getExtras(utils::Entity entity) const noexcept;
 };
 
 FILAMENT_UPCAST(FilamentInstance)
