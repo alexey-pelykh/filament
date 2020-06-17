@@ -273,8 +273,8 @@ void FAssetLoader::createAsset(const cgltf_data* srcAsset, size_t numInstances) 
     }
 
     // Collect extras from nodes
-    for (cgltf_size i = 0, len = scene->nodes_count; i < len; ++i) {
-        const auto node = scene->nodes[i];
+    for (cgltf_size i = 0, len = srcAsset->nodes_count; i < len; ++i) {
+        const auto node = &srcAsset->nodes[i];
         mResult->mExtras[reinterpret_cast<const void*>(node)] = getExtras(srcAsset, &node->extras);
     }
 
