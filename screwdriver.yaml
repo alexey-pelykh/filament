@@ -4,7 +4,7 @@ annotations:
   screwdriver.cd/chainPR: true
 
 shared:
-  image: docker.ouroath.com:4443/ryot/android-sd4-staged-ylinux6-ndk-ninja:latest
+  image: docker.ouroath.com:4443/ryot/google-filament-sd-image:latest
   annotations:
     screwdriver.cd/ram: HIGH
     screwdriver.cd/cpu: HIGH
