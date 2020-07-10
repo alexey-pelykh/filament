@@ -33,13 +33,13 @@ jobs:
       PUBLISHLIB_RELEASE_ARG: "-Prelease -PdoRelease"
 
   snapshot:
-    requires: [~commit:ryot-master]
+    requires: [~commit:ryot-main]
     template: mobile-excellence/android-library
     environment:
       PUBLISHLIB_RELEASE_ARG: "-Psnapshot"
 
   feature:
-    requires: [~pr:ryot-master]
+    requires: [~pr:ryot-main]
     template: mobile-excellence/android-library
     environment:
       FORCE_PUBLISH_LIBRARY: 1
